@@ -10,6 +10,7 @@
     "url": "https://github.com/mattdesl"
   },
   "dependencies": {
+    "add-line-numbers": "^1.0.1",
     "dprop": "^1.0.0",
     "gl-shader-extract": "^1.0.2",
     "glsl-extract-reflect": "^1.0.1",
@@ -38,10 +39,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/mattdesl/glo-shader.git"
+    "url": "git://github.com/glo-js/glo-shader.git"
   },
-  "homepage": "https://github.com/mattdesl/glo-shader",
+  "homepage": "https://github.com/glo-js/glo-shader",
   "bugs": {
-    "url": "https://github.com/mattdesl/glo-shader/issues"
+    "url": "https://github.com/glo-js/glo-shader/issues"
   }
 }
