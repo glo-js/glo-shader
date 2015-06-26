@@ -1,6 +1,6 @@
 {
   "name": "glo-shader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a generic shader interface for WebGL",
   "main": "index.js",
   "license": "MIT",
