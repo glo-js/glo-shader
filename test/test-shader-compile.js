@@ -18,6 +18,8 @@ test('shader should compile', function (t) {
 
   t.deepEqual(result.types, expected, 'provides types')
   result.dispose()
+  gl = null
+  result = null
   t.end()
 })
 
@@ -41,6 +43,8 @@ test('shader should support reloading', function (t) {
   result.update({ vertex: vert2, fragment: frag2 })
   t.deepEqual(result.types, expected2, 'reloads shader and gets new types')
   result.dispose()
+  gl = null
+  result = null
   t.end()
 })
 
@@ -56,10 +60,12 @@ test('shader should fail on compile', function (t) {
       quiet: quiet
     })
     result.dispose()
+    result = null
     return
   }
 
   t.throws(setup, 'frag shader should not compile')
+  gl = null
   t.end()
 })
 
@@ -75,9 +81,11 @@ test('shader should fail on link', function (t) {
       quiet: quiet
     })
     result.dispose()
+    result = null
     return
   }
 
   t.throws(setup, 'should throw error on link')
+  gl = null
   t.end()
 })

@@ -6,7 +6,7 @@ var mat4 = require('gl-mat4')
 
 var glslify = require('glslify')
 
-test('shader should compile', function (t) {
+test('shader should get vars', function (t) {
   var gl = createContext()
   var expected = require('./fixtures/light-struct-types.json')
   var vert = glslify('./fixtures/light-struct.vert')
@@ -56,5 +56,7 @@ test('shader should compile', function (t) {
   t.deepEqual(shader.attributes, { position: { location: 1, size: 4, type: 'vec4' }, someAttrib: { location: 0, size: 1, type: 'float' } }, 'bind attrib locations')
 
   shader.dispose()
+  shader = null
+  gl = null
   t.end()
 })

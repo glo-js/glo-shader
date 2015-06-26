@@ -1,0 +1,46 @@
+{
+  "uniforms": [
+    {
+      "name": "blah",
+      "type": "mat2x3"
+    },
+    {
+      "name": "blah2",
+      "type": "mat3"
+    },
+    {
+      "name": "iChannel0",
+      "type": "sampler2D"
+    },
+    {
+      "name": "iChannel1",
+      "type": "usampler2D"
+    },
+    {
+      "name": "model",
+      "type": "mat4"
+    },
+    {
+      "name": "projection",
+      "type": "mat4"
+    },
+    {
+      "name": "view",
+      "type": "mat4"
+    }
+  ],
+  "attributes": [
+    {
+      "name": "normal",
+      "type": "vec3"
+    },
+    {
+      "name": "position",
+      "type": "vec4"
+    },
+    {
+      "name": "uv",
+      "type": "vec2"
+    }
+  ]
+}
