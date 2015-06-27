@@ -13,7 +13,7 @@ function createShader (gl, opt) {
   opt = opt || {}
   var program = gl.createProgram()
   var vertexShader, fragmentShader
-  var types, uniforms, attributes, uniformPathDict
+  var types, uniforms, attributes
   var name = opt.name || ''
 
   var shader = {
@@ -102,28 +102,22 @@ function createShader (gl, opt) {
       })
 
       // provide UX for inactive uniforms...? TBD
-      if (!quiet) {
+      if (!quiet && inactiveUniforms.length > 0) {
         var shaderName = name ? (' (' + name + ')') : ''
-        console.warn('Inactive uniforms in shader' + shaderName + ': ' 
-            + inactiveUniforms
-              .map(function (x) { return x.name })
-              .join(', '))
+        console.warn('Inactive uniforms in shader' + shaderName + ': '
+          + inactiveUniforms
+            .map(function (x) { return x.name })
+            .join(', '))
       }
     }
-    
+
     // normalize sort order by name across Chrome / FF
     types.uniforms.sort(compareString)
     types.attributes.sort(compareString)
 
-    // bind shader before setting optional default values
-    bind()
-
     // provide optimized getters/setters
-    uniformPathDict = {}
     uniforms = reflect(types.uniforms, function (uniform, index) {
-      var prop = makeUniformProp(uniform, index)
-      uniformPathDict[uniform.path] = prop
-      return prop
+      return makeUniformProp(uniform, index)
     })
 
     // provide attribute locations and type
@@ -137,29 +131,6 @@ function createShader (gl, opt) {
       }
       return struct
     }, {})
-
-    // allow user to set default values for uniforms
-    if (opt.uniforms) {
-      opt.uniforms.forEach(function (uniform) {
-        if (typeof uniform.value !== 'undefined') {
-          uniformByName(uniform.name, uniform.value)
-        }
-      })
-    }
-  }
-
-  // Currently private...
-  // but may be useful to the user
-  // instead of: (short name)
-  //  shader.lights[0].foo(value)
-  // if would be: (qualified name)
-  //  shader.uniform('lights[0].foo', value)
-  function uniformByName (name, value, transposed) {
-    var prop = uniformPathDict[name]
-    if (!prop) {
-      throw new Error('no uniform found by path ' + name)
-    }
-    return prop(value, transposed)
   }
 
   function makeUniformProp (uniform) {
@@ -168,16 +139,16 @@ function createShader (gl, opt) {
     var type = uniform.type
     var location = gl.getUniformLocation(program, path)
     var setter = getPropSetter(path, location, type)
-    
+
     var generated = new Function('self', 'gl', 'program', 'location', [
       'return function uniformGetSet (value, transposed) {',
-        '\tif (typeof value === "undefined")',
-          '\t\treturn location ? gl.getUniform(program, location) : undefined',
-        '\telse {',
-          '\t\tif (location)',
-          '\t\t\t' + setter,
-          '\t\treturn self',
-        '\t}',
+      '\tif (typeof value === "undefined")',
+      '\t\treturn location ? gl.getUniform(program, location) : undefined',
+      '\telse {',
+      '\t\tif (location)',
+      '\t\t\t' + setter,
+      '\t\treturn self',
+      '\t}',
       '}'
     ].join('\n'))
     return generated(shader, gl, program, location)
